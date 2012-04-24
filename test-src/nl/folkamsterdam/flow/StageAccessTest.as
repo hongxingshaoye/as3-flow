@@ -29,7 +29,7 @@ package nl.folkamsterdam.flow
 
 			eventDispatcher = new EventDispatcher();
 
-			flowManager = new FlowManager(container, eventDispatcher, .1);
+			flowManager = new FlowManager(container, eventDispatcher, FlowEvent, .1);
 
 			view1 = new Sprite();
 			view2 = new Sprite();

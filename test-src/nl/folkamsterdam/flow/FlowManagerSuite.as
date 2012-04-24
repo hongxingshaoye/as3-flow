@@ -9,5 +9,6 @@ package nl.folkamsterdam.flow
 		public var stageAccessTest:StageAccessTest;
 		public var flowEventTest:FlowEventTest;
 		public var eventDispatcherTest:EventDispatcherTest;
+		public var customEventsTest:CustomEventsTest;
 	}
 }

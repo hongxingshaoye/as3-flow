@@ -16,6 +16,7 @@ package nl.folkamsterdam.flow
 		private var container:DisplayObjectContainer;
 		private var current:DisplayObject;
 		private var eventDispatcher:IEventDispatcher;
+		private var eventClass:Class;
 		private var _sharedTimeline:TimelineMax;
 		
 		protected var defaultTweenDuration:Number = 1;
@@ -39,7 +40,7 @@ package nl.folkamsterdam.flow
 			return _sharedTimeline;
 		}
 
-		public function FlowManager(container:DisplayObjectContainer, eventDispatcher:IEventDispatcher = null, defaultTweenDuration:Number = 1)
+		public function FlowManager(container:DisplayObjectContainer, eventDispatcher:IEventDispatcher = null, eventClass:Class = null, defaultTweenDuration:Number = 1)
 		{
 			this.container = container;
 
@@ -55,6 +56,8 @@ package nl.folkamsterdam.flow
 				eventDispatcher.addEventListener(FlowEvent.ANIMATE_IN_NEW, handleAnimateInNew);
 				eventDispatcher.addEventListener(FlowEvent.SWAP, handleSwap);
 			}
+			
+			this.eventClass = eventClass || FlowEvent;
 			
 			this.defaultTweenDuration = defaultTweenDuration;
 		}
@@ -167,17 +170,20 @@ package nl.folkamsterdam.flow
 
 		private function handleAnimateOutCurrent(event:FlowEvent):void
 		{
-			animateOutCurrent();
+			if (event is eventClass)
+				animateOutCurrent();
 		}
 
 		private function handleAnimateInNew(event:FlowEvent):void
 		{
-			animateInNew(event.view);
+			if (event is eventClass)
+				animateInNew(event.view);
 		}
 
 		private function handleSwap(event:FlowEvent):void
 		{
-			swap(event.view);
+			if (event is eventClass)
+				swap(event.view);
 		}
 	}
 }
