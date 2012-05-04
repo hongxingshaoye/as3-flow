@@ -23,19 +23,19 @@ package nl.folkamsterdam.flow
 		}
 
 		[Test]
-		public function constructor_adds_ANIMATE_OUT_CURRENT_listener():void
+		public function listens_for_ANIMATE_OUT_CURRENT():void
 		{
 			assertTrue(eventDispatcher.hasEventListener(FlowEvent.ANIMATE_OUT_CURRENT));
 		}
 
 		[Test]
-		public function constructor_adds_ANIMATE_IN_NEW_listener():void
+		public function listens_for_ANIMATE_IN_NEW():void
 		{
 			assertTrue(eventDispatcher.hasEventListener(FlowEvent.ANIMATE_IN_NEW));
 		}
 
 		[Test]
-		public function constructor_adds_SWAP_listener():void
+		public function listens_for_SWAP():void
 		{
 			assertTrue(eventDispatcher.hasEventListener(FlowEvent.SWAP));
 		}

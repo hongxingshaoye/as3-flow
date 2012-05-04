@@ -2,9 +2,11 @@ package nl.folkamsterdam.flow
 {
 	import nl.folkamsterdam.flow.events.FlowEvent;
 
+	import com.greensock.TimelineLite;
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.greensock.core.TweenCore;
+	import com.greensock.data.TweenLiteVars;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -18,9 +20,8 @@ package nl.folkamsterdam.flow
 		private var eventDispatcher:IEventDispatcher;
 		private var eventClass:Class;
 		private var _sharedTimeline:TimelineMax;
-		
 		protected var defaultTweenDuration:Number = 1;
-		
+
 		private function get animationIsPlaying():Boolean
 		{
 			return (_sharedTimeline && _sharedTimeline.active);
@@ -56,9 +57,9 @@ package nl.folkamsterdam.flow
 				eventDispatcher.addEventListener(FlowEvent.ANIMATE_IN_NEW, handleAnimateInNew);
 				eventDispatcher.addEventListener(FlowEvent.SWAP, handleSwap);
 			}
-			
+
 			this.eventClass = eventClass || FlowEvent;
-			
+
 			this.defaultTweenDuration = defaultTweenDuration;
 		}
 
@@ -76,6 +77,8 @@ package nl.folkamsterdam.flow
 
 		public function animateInNew(view:DisplayObject):TweenCore
 		{
+			getExitTween(view).complete();
+
 			sharedTimeline.append(getEnterAnimation(view));
 
 			attemptPlay();
@@ -105,6 +108,7 @@ package nl.folkamsterdam.flow
 				eventDispatcher.removeEventListener(FlowEvent.ANIMATE_OUT_CURRENT, handleAnimateOutCurrent);
 				eventDispatcher.removeEventListener(FlowEvent.ANIMATE_IN_NEW, handleAnimateInNew);
 				eventDispatcher.removeEventListener(FlowEvent.SWAP, handleSwap);
+				
 				eventDispatcher = null;
 			}
 
@@ -112,16 +116,6 @@ package nl.folkamsterdam.flow
 			container = null;
 		}
 
-		protected function getDefaultExitAnimation(view:DisplayObject):TweenCore
-		{
-			return TweenMax.to(view, defaultTweenDuration, {autoAlpha:0});
-		}
-
-		protected function getDefaultEnterAnimation(view:DisplayObject):TweenCore
-		{
-			return TweenMax.to(view, defaultTweenDuration, {autoAlpha:1});
-		}
-		
 		private function attemptPlay():void
 		{
 			if (!animationIsPlaying)
@@ -130,44 +124,39 @@ package nl.folkamsterdam.flow
 
 		private function getExitAnimation(view:DisplayObject):TweenCore
 		{
-			// Wrap the tweens in a timeline so we don't accidently overwrite the provided tweens' onComplete parameters:
-			const timeline:TimelineMax = new TimelineMax();
-			
-			if (view is IAnimationEnabled)
-				timeline.append(IAnimationEnabled(view).exitAnimation);
-			else
-				timeline.append(getDefaultExitAnimation(view));
-			
-			timeline.vars.onComplete = container.removeChild;
-			timeline.vars.onCompleteParams = [view];
-			
-			return timeline;
+			return buildTimeline(getExitTween(view), new TweenLiteVars().onComplete(container.removeChild, [view]));
 		}
 
 		private function getEnterAnimation(view:DisplayObject):TweenCore
 		{
+			return buildTimeline(getEnterTween(view), new TweenLiteVars().onStart(container.addChild, [view]));
+		}
+
+		private function buildTimeline(tween:TweenCore, variables:TweenLiteVars):TweenCore
+		{
 			// Wrap the tweens in a timeline so we don't accidently overwrite the provided tweens' onStart parameters:
-			const timeline:TimelineMax = new TimelineMax();
-			
-			if (view is IAnimationEnabled)
-			{
-				IAnimationEnabled(view).exitAnimation.complete();
-				
-				timeline.append(IAnimationEnabled(view).enterAnimation);
-			}
-			else
-			{
-				getDefaultExitAnimation(view).complete();
-				
-				timeline.append(getDefaultEnterAnimation(view));
-			}
-			
-			timeline.vars.onStart = container.addChild;
-			timeline.vars.onStartParams = [view];			
-			
+			const timeline:TimelineLite = new TimelineLite(variables);
+
+			timeline.append(tween);
+
 			return timeline;
 		}
 
+		private function getExitTween(view:DisplayObject):TweenCore
+		{
+			return (view is IAnimationEnabled) ? IAnimationEnabled(view).exitAnimation : buildDefaultTween(view, 0);
+		}
+
+		private function getEnterTween(view:DisplayObject):TweenCore
+		{
+			return (view is IAnimationEnabled) ? IAnimationEnabled(view).enterAnimation : buildDefaultTween(view, 1);
+		}
+
+		private function buildDefaultTween(view:DisplayObject, targetAlpha:Number):TweenCore
+		{
+			return TweenMax.to(view, defaultTweenDuration, {autoAlpha:targetAlpha});
+		}
+		
 		private function handleAnimateOutCurrent(event:FlowEvent):void
 		{
 			if (event is eventClass)

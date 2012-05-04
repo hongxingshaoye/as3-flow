@@ -3,6 +3,7 @@ package
 	import nl.folkamsterdam.flow.FlowManagerSuite;
 
 	import org.flexunit.internals.TraceListener;
+	import org.flexunit.listeners.CIListener;
 	import org.flexunit.runner.FlexUnitCore;
 	import org.fluint.uiImpersonation.IVisualTestEnvironment;
 	import org.fluint.uiImpersonation.VisualTestEnvironmentBuilder;
@@ -12,7 +13,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
-	[SWF(backgroundColor="#FFFFFF", frameRate="30", width="800", height="600")]
+	[SWF(backgroundColor="#000000", frameRate="30", width="100", height="100")]
 	public class TestRunner extends Sprite
 	{
 		public static var environment:IVisualTestEnvironment;
@@ -36,9 +37,12 @@ package
 			environment = VisualTestEnvironmentBuilder.getInstance(this).buildVisualTestEnvironment();
 
 			core = new FlexUnitCore();
-
+			
 			core.addListener(new TraceListener());
 
+			if (ENVIRONMENT::CLI)
+				core.addListener(new CIListener());
+			
 			core.run(FlowManagerSuite);
 		}
 	}

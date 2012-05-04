@@ -28,7 +28,7 @@ package nl.folkamsterdam.flow
 		}
 		
 		[Test(async)]
-		public function does_not_listen_to_FlowEvent_ANIMATE_OUT_CURRENT():void
+		public function does_not_listen_for_FlowEvent_ANIMATE_OUT_CURRENT():void
 		{
 			flowManager.animateInNew(view1);
 			
@@ -38,7 +38,7 @@ package nl.folkamsterdam.flow
 		}
 		
 		[Test(async)]
-		public function listens_to_CustomFlowEvent_ANIMATE_OUT_CURRENT():void
+		public function listens_for_CustomFlowEvent_ANIMATE_OUT_CURRENT():void
 		{
 			flowManager.animateInNew(view1);
 			
@@ -48,7 +48,7 @@ package nl.folkamsterdam.flow
 		}
 		
 		[Test(async)]
-		public function does_not_listen_to_FlowEvent_ANIMATE_IN_NEW():void
+		public function does_not_listen_for_FlowEvent_ANIMATE_IN_NEW():void
 		{
 			Async.failOnEvent(this, view1, ViewDummy.ENTER_COMPLETE);
 			
@@ -64,7 +64,7 @@ package nl.folkamsterdam.flow
 		}
 		
 		[Test(async)]
-		public function does_not_listen_to_FlowEvent_SWAP():void
+		public function does_not_listen_for_FlowEvent_SWAP():void
 		{
 			flowManager.animateInNew(view1);
 			
@@ -74,7 +74,7 @@ package nl.folkamsterdam.flow
 		}
 		
 		[Test(async)]
-		public function listens_to_CustomFlowEvent_SWAP():void
+		public function listens_for_CustomFlowEvent_SWAP():void
 		{
 			flowManager.animateInNew(view1);
 			
