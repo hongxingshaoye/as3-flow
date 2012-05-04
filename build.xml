@@ -22,7 +22,6 @@
 			<compiler.external-library-path dir="${libs.dir}" append="true">
 				<include name="*.swc" />
 			</compiler.external-library-path>
-			<define name="ENVIRONMENT::CLI" value="true" />
 		</compc>
 	</target>
 	
@@ -35,6 +34,7 @@
 				<include name="*.swc" />
 			</compiler.library-path>
 			<static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
+			<define name="ENVIRONMENT::CLI" value="true" />
 		</mxmlc>
 		
 		<flexunit swf="${bin.dir}/TestRunner.swf" toDir="${report.dir}" haltonfailure="false" failureproperty="tests.failed" timeout="10000" localtrusted="true" />

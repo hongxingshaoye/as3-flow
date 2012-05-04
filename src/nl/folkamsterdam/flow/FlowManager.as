@@ -17,9 +17,9 @@ package nl.folkamsterdam.flow
 	{
 		private var container:DisplayObjectContainer;
 		private var current:DisplayObject;
+		private var _sharedTimeline:TimelineMax;
 		private var eventDispatcher:IEventDispatcher;
 		private var eventClass:Class;
-		private var _sharedTimeline:TimelineMax;
 		protected var defaultTweenDuration:Number = 1;
 
 		private function get animationIsPlaying():Boolean
@@ -108,7 +108,7 @@ package nl.folkamsterdam.flow
 				eventDispatcher.removeEventListener(FlowEvent.ANIMATE_OUT_CURRENT, handleAnimateOutCurrent);
 				eventDispatcher.removeEventListener(FlowEvent.ANIMATE_IN_NEW, handleAnimateInNew);
 				eventDispatcher.removeEventListener(FlowEvent.SWAP, handleSwap);
-				
+
 				eventDispatcher = null;
 			}
 
@@ -156,7 +156,7 @@ package nl.folkamsterdam.flow
 		{
 			return TweenMax.to(view, defaultTweenDuration, {autoAlpha:targetAlpha});
 		}
-		
+
 		private function handleAnimateOutCurrent(event:FlowEvent):void
 		{
 			if (event is eventClass)
