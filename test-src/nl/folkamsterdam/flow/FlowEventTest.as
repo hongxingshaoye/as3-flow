@@ -1,5 +1,6 @@
-package nl.folkamsterdam.flow.events
+package nl.folkamsterdam.flow
 {
+	import nl.folkamsterdam.flow.events.FlowEvent;
 	public class FlowEventTest
 	{
 		[Test(expects="Error")]

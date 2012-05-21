@@ -1,6 +1,5 @@
 package nl.folkamsterdam.flow
 {
-	import nl.folkamsterdam.flow.events.FlowEventTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	public class FlowManagerSuite

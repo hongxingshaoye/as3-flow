@@ -2,7 +2,7 @@ package nl.folkamsterdam.flow
 {
 	import nl.folkamsterdam.flow.dummies.ViewDummy;
 
-	import org.flexunit.async.Async;
+	import org.flexunit.asserts.assertTrue;
 
 	import flash.display.Sprite;
 
@@ -22,56 +22,56 @@ package nl.folkamsterdam.flow
 			view2 = new ViewDummy();
 		}
 
-		[Test(async)]
+		[Test]
 		public function animateOutCurrent_calls_view_exitAnimation():void
 		{
-			Async.proceedOnEvent(this, view1, ViewDummy.EXIT_COMPLETE);
-
 			flowManager.animateInNew(view1);
 			flowManager.animateOutCurrent();
+
+			assertTrue(view1.exitAnimationIsCalled);
 		}
 
-		[Test(async)]
+		[Test]
 		public function animateInNew_calls_view_exitAnimation_first():void
 		{
-			Async.proceedOnEvent(this, view1, ViewDummy.EXIT_COMPLETE);
-
 			flowManager.animateInNew(view1);
+
+			assertTrue(view1.exitAnimationIsCalled);
 		}
 
-		[Test(async)]
+		[Test]
 		public function animateInNew_calls_view_enterAnimation():void
 		{
-			Async.proceedOnEvent(this, view1, ViewDummy.ENTER_COMPLETE);
-
 			flowManager.animateInNew(view1);
+
+			assertTrue(view1.enterAnimationIsCalled);
 		}
 
-		[Test(async)]
+		[Test]
 		public function swap_calls_old_view_exitAnimation():void
 		{
-			Async.proceedOnEvent(this, view1, ViewDummy.EXIT_COMPLETE);
-
 			flowManager.animateInNew(view1);
 			flowManager.swap(view2);
+
+			assertTrue(view1.exitAnimationIsCalled);
 		}
 
-		[Test(async)]
+		[Test]
 		public function swap_calls_new_view_exitAnimation_first():void
 		{
-			Async.proceedOnEvent(this, view2, ViewDummy.EXIT_COMPLETE);
-
 			flowManager.animateInNew(view1);
 			flowManager.swap(view2);
+
+			assertTrue(view2.exitAnimationIsCalled);
 		}
 
-		[Test(async)]
+		[Test]
 		public function swap_calls_new_view_enterAnimation():void
 		{
-			Async.proceedOnEvent(this, view2, ViewDummy.ENTER_COMPLETE);
-
 			flowManager.animateInNew(view1);
 			flowManager.swap(view2);
+
+			assertTrue(view2.enterAnimationIsCalled);
 		}
 
 		[After]

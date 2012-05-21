@@ -11,7 +11,7 @@
 	</target>
 	
 	<target name="clean">
-		<delete dir="{$bin.dir}" />
+		<delete dir="${bin.dir}" />
 		<delete dir="${report.dir}" />
 	</target>
 	

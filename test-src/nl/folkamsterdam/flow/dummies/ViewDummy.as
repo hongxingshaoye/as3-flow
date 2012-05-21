@@ -3,32 +3,37 @@ package nl.folkamsterdam.flow.dummies
 	import nl.folkamsterdam.flow.IAnimationEnabled;
 
 	import com.greensock.TweenLite;
-	import com.greensock.core.TweenCore;
+	import com.greensock.core.Animation;
 
 	import flash.display.Sprite;
-	import flash.events.Event;
 
 	public class ViewDummy extends Sprite implements IAnimationEnabled
 	{
-		public static const EXIT_COMPLETE:String = "exitComplete";
-		public static const ENTER_COMPLETE:String = "enterComplete";
+		private var _exitAnimationIsCalled:Boolean;
+		private var _enterAnimationIsCalled:Boolean;
 
-		public function get exitAnimation():TweenCore
+		public function get exitAnimationIsCalled():Boolean
 		{
-			const vars:Object = new Object();
-			vars.onComplete = dispatchEvent;
-			vars.onCompleteParams = [new Event(EXIT_COMPLETE)];
-
-			return new TweenLite(this, .1, vars);
+			return _exitAnimationIsCalled;
 		}
 
-		public function get enterAnimation():TweenCore
+		public function get enterAnimationIsCalled():Boolean
 		{
-			const vars:Object = new Object();
-			vars.onComplete = dispatchEvent;
-			vars.onCompleteParams = [new Event(ENTER_COMPLETE)];
+			return _enterAnimationIsCalled;
+		}
 
-			return new TweenLite(this, .1, vars);
+		public function get exitAnimation():Animation
+		{
+			_exitAnimationIsCalled = true;
+
+			return new TweenLite(this, .1, {});
+		}
+
+		public function get enterAnimation():Animation
+		{
+			_enterAnimationIsCalled = true;
+
+			return new TweenLite(this, .1, {});
 		}
 	}
 }

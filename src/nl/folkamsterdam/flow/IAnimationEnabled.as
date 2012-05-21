@@ -1,11 +1,11 @@
 package nl.folkamsterdam.flow
 {
-	import com.greensock.core.TweenCore;
+	import com.greensock.core.Animation;
 
 	public interface IAnimationEnabled
 	{
-		function get exitAnimation():TweenCore;
+		function get exitAnimation():Animation;
 
-		function get enterAnimation():TweenCore;
+		function get enterAnimation():Animation;
 	}
 }

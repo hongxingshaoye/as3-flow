@@ -2,7 +2,7 @@ package nl.folkamsterdam.flow
 {
 	import org.flexunit.async.Async;
 	import nl.folkamsterdam.flow.events.FlowEvent;
-	import nl.folkamsterdam.flow.dummies.ViewDummy;
+	import nl.folkamsterdam.flow.dummies.ViewDummyAsync;
 	import nl.folkamsterdam.flow.dummies.events.CustomFlowEvent;
 
 	import flash.display.Sprite;
@@ -14,8 +14,8 @@ package nl.folkamsterdam.flow
 		private var container:Sprite;
 		private var eventDispatcher:IEventDispatcher;
 		private var flowManager:FlowManager;
-		private var view1:ViewDummy;
-		private var view2:ViewDummy;
+		private var view1:ViewDummyAsync;
+		private var view2:ViewDummyAsync;
 
 		[Before]
 		public function before():void
@@ -23,8 +23,8 @@ package nl.folkamsterdam.flow
 			container = new Sprite();
 			eventDispatcher = new EventDispatcher();
 			flowManager = new FlowManager(container, eventDispatcher, CustomFlowEvent);
-			view1 = new ViewDummy();
-			view2 = new ViewDummy();
+			view1 = new ViewDummyAsync();
+			view2 = new ViewDummyAsync();
 		}
 		
 		[Test(async)]
@@ -32,7 +32,7 @@ package nl.folkamsterdam.flow
 		{
 			flowManager.animateInNew(view1);
 			
-			Async.failOnEvent(this, view1, ViewDummy.EXIT_COMPLETE);
+			Async.failOnEvent(this, view1, ViewDummyAsync.EXIT_COMPLETE);
 			
 			eventDispatcher.dispatchEvent(new FlowEvent(FlowEvent.ANIMATE_OUT_CURRENT));
 		}
@@ -42,7 +42,7 @@ package nl.folkamsterdam.flow
 		{
 			flowManager.animateInNew(view1);
 			
-			Async.proceedOnEvent(this, view1, ViewDummy.EXIT_COMPLETE);
+			Async.proceedOnEvent(this, view1, ViewDummyAsync.EXIT_COMPLETE);
 			
 			eventDispatcher.dispatchEvent(new CustomFlowEvent(CustomFlowEvent.ANIMATE_OUT_CURRENT));
 		}
@@ -50,7 +50,7 @@ package nl.folkamsterdam.flow
 		[Test(async)]
 		public function does_not_listen_for_FlowEvent_ANIMATE_IN_NEW():void
 		{
-			Async.failOnEvent(this, view1, ViewDummy.ENTER_COMPLETE);
+			Async.failOnEvent(this, view1, ViewDummyAsync.ENTER_COMPLETE);
 			
 			eventDispatcher.dispatchEvent(new FlowEvent(FlowEvent.ANIMATE_IN_NEW, view1));
 		}
@@ -58,7 +58,7 @@ package nl.folkamsterdam.flow
 		[Test(async)]
 		public function listens_to_CustomFlowEvent_ANIMATE_IN_NEW():void
 		{
-			Async.proceedOnEvent(this, view1, ViewDummy.ENTER_COMPLETE);
+			Async.proceedOnEvent(this, view1, ViewDummyAsync.ENTER_COMPLETE);
 			
 			eventDispatcher.dispatchEvent(new CustomFlowEvent(CustomFlowEvent.ANIMATE_IN_NEW, view1));
 		}
@@ -68,7 +68,7 @@ package nl.folkamsterdam.flow
 		{
 			flowManager.animateInNew(view1);
 			
-			Async.failOnEvent(this, view2, ViewDummy.ENTER_COMPLETE);
+			Async.failOnEvent(this, view2, ViewDummyAsync.ENTER_COMPLETE);
 			
 			eventDispatcher.dispatchEvent(new FlowEvent(FlowEvent.SWAP, view2));
 		}
@@ -78,7 +78,7 @@ package nl.folkamsterdam.flow
 		{
 			flowManager.animateInNew(view1);
 			
-			Async.proceedOnEvent(this, view2, ViewDummy.ENTER_COMPLETE);
+			Async.proceedOnEvent(this, view2, ViewDummyAsync.ENTER_COMPLETE);
 			
 			eventDispatcher.dispatchEvent(new CustomFlowEvent(CustomFlowEvent.SWAP, view2));
 		}
